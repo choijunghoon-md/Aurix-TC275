@@ -37,7 +37,7 @@
 #define LED1         &MODULE_P00,2
 #define LED2         &MODULE_P00,6
 #define LED3         &MODULE_P00,8 /* LED: Port, Pin definition            */
-#define WAIT_TIME   10
+#define WAIT_TIME   5
 
 int count=0;/* Wait time constant in milliseconds   */
 
@@ -62,7 +62,7 @@ void blinkLED(void)
 {
     count++;                                                     /* Toggle the state of the LED      */
     waitTime(IfxStm_getTicksFromMilliseconds(BSP_DEFAULT_TIMER, WAIT_TIME));
-    if(count%3==0){IfxPort_togglePin(LED1);} /* Wait 500 milliseconds            */
+    if(count%4==0){IfxPort_togglePin(LED1);} /* Wait 500 milliseconds            */
     if(count%2==0){IfxPort_togglePin(LED2);}
     if(count%1==0){IfxPort_togglePin(LED3);}
 }
