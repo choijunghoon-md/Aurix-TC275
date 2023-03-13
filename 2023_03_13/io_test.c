@@ -101,8 +101,10 @@ void pinmode_out(void){
     IfxPort_setPinMode(a6, IfxPort_Mode_outputPushPullGeneral);
     IfxPort_setPinMode(a7, IfxPort_Mode_outputPushPullGeneral);
     IfxPort_setPinMode(a8, IfxPort_Mode_outputPushPullGeneral);
-    aec[8]={0,0,0,0,0,0,0,0};
-    aec_a[8]={0,0,0,0,0,0,0,0};
+    for(int i=0; i<8; i++){
+        aec[i]=0;
+        aec_a[i]=0;
+    }
 
 }
 
@@ -115,8 +117,10 @@ void pinmode_in(void){
     IfxPort_setPinMode(a6, IfxPort_Mode_inputPullUp);
     IfxPort_setPinMode(a7, IfxPort_Mode_inputPullUp);
     IfxPort_setPinMode(a8, IfxPort_Mode_inputPullUp);
-    aec[8]={0,0,0,0,0,0,0,0};
-    aec_a[8]={0,0,0,0,0,0,0,0};
+    for(int i=0; i<8; i++){
+        aec[i]=0;
+        aec_a[i]=0;
+    }
 }
 
 void outdata(int n){
