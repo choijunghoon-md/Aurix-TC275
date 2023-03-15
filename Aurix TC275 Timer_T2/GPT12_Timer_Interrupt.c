@@ -102,7 +102,7 @@ void interruptGpt12_T3(void)
     IfxGpt12_T3_setTimerValue(&MODULE_GPT120, RELOAD_VALUE_50ms);
   //  IfxPort_setPinLow(LED);
     IfxPort_setPinHigh(TEST_PIN1);
-    waitTime(IfxStm_getTicksFromMilliseconds(BSP_DEFAULT_TIMER, WAIT_TIME));      // 1msec ¡ˆø¨ ∑Á∆æ
+    waitTime(IfxStm_getTicksFromMilliseconds(BSP_DEFAULT_TIMER, WAIT_TIME));      // 1msec √Å√∂¬ø¬¨ ¬∑√ß√Ü¬æ
     IfxPort_setPinLow(TEST_PIN1);
 }
 
@@ -111,6 +111,6 @@ void interruptGpt12_T2(void)
     IfxGpt12_T2_setTimerValue(&MODULE_GPT120, RELOAD_VALUE_10ms);
   //  IfxPort_setPinLow(LED);
     IfxPort_setPinHigh(TEST_PIN2);
-    waitTime(IfxStm_getTicksFromMilliseconds(BSP_DEFAULT_TIMER, WAIT_TIME));      // 1msec ¡ˆø¨ ∑Á∆æ
+    waitTime(IfxStm_getTicksFromMilliseconds(BSP_DEFAULT_TIMER, 9.7));      // 1msec √Å√∂¬ø¬¨ ¬∑√ß√Ü¬æ
     IfxPort_setPinLow(TEST_PIN2);
 }
