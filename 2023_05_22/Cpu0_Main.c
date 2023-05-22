@@ -45,17 +45,17 @@ int core0_main(void)
     IfxCpu_emitEvent(&g_cpuSyncEvent);
     IfxCpu_waitEvent(&g_cpuSyncEvent, 1);
     
-    initLed();
-    blinkLED1();
-    Driver_Can_Init();
+    initLed();                //LED핀 설정
+    blinkLED1();              //LED1 신호 확인 함수
+    Driver_Can_Init();        //CAN통신 설정
    // CAN_TEST();
 
     while(1)
     {
         //Driver_Can_TxTest();
         //blinkLED1();
-        CAN_TEST();
-        blinkLED2();
+        CAN_TEST();                                                                      //CAN통신 보내기
+        blinkLED2();                                                                     //LED2 toggle
         waitTime(IfxStm_getTicksFromMilliseconds(BSP_DEFAULT_TIMER, WAIT_TIME_20ms));    /* Wait 20 milliseconds            */
     }
     return (1);
