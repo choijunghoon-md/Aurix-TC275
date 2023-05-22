@@ -55,7 +55,7 @@ int core0_main(void)
         //Driver_Can_TxTest();
         //blinkLED1();
         CAN_TEST();                                                                      //CAN통신 보내기
-        blinkLED2();                                                                     //LED2 toggle
+        blinkLED2();                                                                     //LED2 Toggle
         waitTime(IfxStm_getTicksFromMilliseconds(BSP_DEFAULT_TIMER, WAIT_TIME_20ms));    /* Wait 20 milliseconds            */
     }
     return (1);
