@@ -35,8 +35,8 @@ IFX_INTERRUPT(canIsrTxHandler, 0, ISR_PRIORITY_CAN_TX);
 /*Variable*/ 
 /***********************************************************************/
 App_MulticanBasic g_MulticanBasic; /**< \brief Demo information */
-volatile CanRxMsg rec;                    //can rx msg¼³Á¤(ÇöÀç TXÄÚµå¿¡ ´ëÇØ¼± À¯±âµÈ º¯¼ö)
-int a[8]={0,0x1,0x2,0x3,0x4,0x5,0x6,0x7}; //º¸³¾ µ¥ÀÌÅÍ ¼³Á¤
+volatile CanRxMsg rec;                    //can rx msgì„¤ì •(í˜„ì¬ TXì½”ë“œì— ëŒ€í•´ì„  ìœ ê¸°ëœ ë³€ìˆ˜)
+int a[8]={0,0x1,0x2,0x3,0x4,0x5,0x6,0x7}; //ë³´ë‚¼ ë°ì´í„° ì„¤ì •
  
 /***********************************************************************/
 /*Function*/ 
@@ -54,14 +54,14 @@ void initLed(void)
      *  - define the pad driver strength
      * ======================================================================
      */
-    g_led.led1.port      = &MODULE_P00;                                //led1ÇÉ ¼³Á¤
+    g_led.led1.port      = &MODULE_P00;                                //led1í•€ ì„¤ì •
     g_led.led1.pinIndex  = PIN5;
-    g_led.led1.mode      = IfxPort_OutputIdx_general;                  //led1ÇÉ ¸ğµå ¼³Á¤
+    g_led.led1.mode      = IfxPort_OutputIdx_general;                  //led1í•€ ëª¨ë“œ ì„¤ì •
     g_led.led1.padDriver = IfxPort_PadDriver_cmosAutomotiveSpeed1;
 
-    g_led.led2.port      = &MODULE_P00;                                //led2ÇÉ ¼³Á¤
+    g_led.led2.port      = &MODULE_P00;                                //led2í•€ ì„¤ì •
     g_led.led2.pinIndex  = PIN6;
-    g_led.led2.mode      = IfxPort_OutputIdx_general;                  //led1ÇÉ ¸ğµå ¼³Á¤
+    g_led.led2.mode      = IfxPort_OutputIdx_general;                  //led1í•€ ëª¨ë“œ ì„¤ì •
     g_led.led2.padDriver = IfxPort_PadDriver_cmosAutomotiveSpeed1;
 
     /* Initialize the pins connected to LEDs to level "HIGH"; will keep the LEDs turned off as default state */
@@ -82,9 +82,9 @@ void blinkLED1(void)
 {
     //IfxPort_togglePin(LED1);                                                     /* Toggle the state of the LED      */
 
-    IfxPort_setPinHigh(LED1); //LED1 ÄÑ±â
+    IfxPort_setPinHigh(LED1); //LED1 ì¼œê¸°
     waitTime(IfxStm_getTicksFromMilliseconds(BSP_DEFAULT_TIMER, WAIT_TIME_1ms));    /* Wait 1 milliseconds            */
-    IfxPort_setPinLow(LED1); //LED1 ²ô±â
+    IfxPort_setPinLow(LED1); //LED1 ë„ê¸°
 }
 void blinkLED2(void)
 {
@@ -111,31 +111,31 @@ void Driver_Can_Init(void)
     IfxMultican_Can_NodeConfig canNodeConfig;
     IfxMultican_Can_Node_initConfig(&canNodeConfig, &g_MulticanBasic.drivers.can);
 
-    canNodeConfig.baudrate = 500000UL;                                                                      // CAN ¼Óµµ ¼³Á¤ 500kbps
+    canNodeConfig.baudrate = 500000UL;                                                                      // CAN ì†ë„ ì„¤ì • 500kbps
     {
-        canNodeConfig.nodeId    = IfxMultican_NodeId_0;//(IfxMultican_NodeId)((int)IfxMultican_NodeId_0);   // CANÀÇ Node ID ¼³Á¤ 0¹øÀ¸·Î ¼³Á¤ÇÔ
-        canNodeConfig.rxPin     = &IfxMultican_RXD0B_P20_7_IN;                                              // ÀÔ·ÂÇÉ ¼³Á¤
+        canNodeConfig.nodeId    = IfxMultican_NodeId_0;//(IfxMultican_NodeId)((int)IfxMultican_NodeId_0);   // CANì˜ Node ID ì„¤ì • 0ë²ˆìœ¼ë¡œ ì„¤ì •í•¨
+        canNodeConfig.rxPin     = &IfxMultican_RXD0B_P20_7_IN;                                              // ì…ë ¥í•€ ì„¤ì •
         canNodeConfig.rxPinMode = IfxPort_InputMode_pullUp;
-        canNodeConfig.txPin     = &IfxMultican_TXD0_P20_8_OUT;                                              // Ãâ·ÂÇÉ ¼³Á¤
+        canNodeConfig.txPin     = &IfxMultican_TXD0_P20_8_OUT;                                              // ì¶œë ¥í•€ ì„¤ì •
         canNodeConfig.txPinMode = IfxPort_OutputMode_pushPull;
 
-        IfxMultican_Can_Node_init(&g_MulticanBasic.drivers.canSrcNode, &canNodeConfig);                     // CAN node ÃÊ±âÈ­
+        IfxMultican_Can_Node_init(&g_MulticanBasic.drivers.canSrcNode, &canNodeConfig);                     // CAN node ì´ˆê¸°í™”
     }
 
     /* Create message object config */
     IfxMultican_Can_MsgObjConfig canMsgObjConfig;                                                           // CAN message object configuration
     IfxMultican_Can_MsgObj_initConfig(&canMsgObjConfig, &g_MulticanBasic.drivers.canSrcNode);
 
-    canMsgObjConfig.msgObjId              = 0;                                                              //256°³ÀÇ message object°¡ ÀÖÀ½
+    canMsgObjConfig.msgObjId              = 0;                                                              //256ê°œì˜ message objectê°€ ìˆìŒ
     canMsgObjConfig.messageId             = 0x100;
     canMsgObjConfig.acceptanceMask        = 0x7FFFFFFFUL;
-    canMsgObjConfig.frame                 = IfxMultican_Frame_transmit;                                     // CAN TX·Î ¼³Á¤
-    canMsgObjConfig.control.messageLen    = IfxMultican_DataLengthCode_8;                                   // Data ±æÀÌ´Â 8
-    canMsgObjConfig.control.extendedFrame = FALSE;                                                          // Extended ID »ç¿ë ¾ÈÇÔ
+    canMsgObjConfig.frame                 = IfxMultican_Frame_transmit;                                     // CAN TXë¡œ ì„¤ì •
+    canMsgObjConfig.control.messageLen    = IfxMultican_DataLengthCode_8;                                   // Data ê¸¸ì´ëŠ” 8
+    canMsgObjConfig.control.extendedFrame = FALSE;                                                          // Extended ID ì‚¬ìš© ì•ˆí•¨
     canMsgObjConfig.control.matchingId    = TRUE;
 
-    canMsgObjConfig.txInterrupt.enabled = TRUE;                                                             // CAN ÀÎÅÍ·´Æ® enabled
-    canMsgObjConfig.txInterrupt.srcId = TX_INTERRUPT_SRC_ID;                                                // Àü¼Û ÀÎÅÍ·´Æ® ¼­ºñ½º ¿äÃ» ID
+    canMsgObjConfig.txInterrupt.enabled = TRUE;                                                             // CAN ì¸í„°ëŸ½íŠ¸ enabled
+    canMsgObjConfig.txInterrupt.srcId = TX_INTERRUPT_SRC_ID;                                                // ì „ì†¡ ì¸í„°ëŸ½íŠ¸ ì„œë¹„ìŠ¤ ìš”ì²­ ID
 
 
     /* initialize message object */
@@ -151,15 +151,15 @@ void Driver_Can_Init(void)
 
 void Driver_Can_TxTest(void)
 {
-    const uint32 dataLow  = 0x12340000;             //data[0]
-    const uint32 dataHigh = 0x9abc0000;             //data[1]
+    const uint32 dataLow  = 0x12340000;             //msg data[0]ì— ë„£ì„ ë°ì´í„°
+    const uint32 dataHigh = 0x9abc0000;             //msg data[1]ì— ë„£ì„ ë°ì´í„°
 
     /* Transmit Data */
     {
         IfxMultican_Message msg;
-        IfxMultican_Message_init(&msg, 0x100, dataLow, dataHigh, IfxMultican_DataLengthCode_8); // msg ¼³Á¤
+        IfxMultican_Message_init(&msg, 0x100, dataLow, dataHigh, IfxMultican_DataLengthCode_8); // msg ì„¤ì •
 
-        while (IfxMultican_Can_MsgObj_sendMessage(&g_MulticanBasic.drivers.canSrcMsgObj, &msg) == IfxMultican_Status_notSentBusy) //CAN ¸Ş¼¼Áö º¸³»±â
+        while (IfxMultican_Can_MsgObj_sendMessage(&g_MulticanBasic.drivers.canSrcMsgObj, &msg) == IfxMultican_Status_notSentBusy) //CAN ë©”ì„¸ì§€ ë³´ë‚´ê¸°
         {}
     }
 }
@@ -168,13 +168,13 @@ void Driver_Can_TxTest(void)
 void CAN_send(CanRxMsg *message)
 {
     IfxMultican_Message msg;
-    const unsigned dataLow = message->Data[0]|(message->Data[1]<<8)|(message->Data[2]<<16)|(message->Data[3]<<24);  //µ¥ÀÌÅÍ¸¦ ÇÕÃÄ¼­ data[0]
-    const unsigned dataHigh = message->Data[4]|(message->Data[5]<<8)|(message->Data[6]<<16)|(message->Data[7]<<24); //µ¥ÀÌÅÍ¸¦ ÇÕÃÄ¼­ data[1]
+    const unsigned dataLow = message->Data[0]|(message->Data[1]<<8)|(message->Data[2]<<16)|(message->Data[3]<<24);  //ë°ì´í„°ë¥¼ í•©ì³ì„œ msg data[0]ì— ë„£ì„ ë°ì´í„°
+    const unsigned dataHigh = message->Data[4]|(message->Data[5]<<8)|(message->Data[6]<<16)|(message->Data[7]<<24); //ë°ì´í„°ë¥¼ í•©ì³ì„œ msg data[1]ì— ë„£ì„ ë°ì´í„°
 
 
-    IfxMultican_Message_init(&msg,message->ID,dataLow,dataHigh,message->DLC);// msg ¼³Á¤
+    IfxMultican_Message_init(&msg,message->ID,dataLow,dataHigh,message->DLC);// msg ì„¤ì •
 
-    while (IfxMultican_Can_MsgObj_sendMessage(&g_MulticanBasic.drivers.canSrcMsgObj, &msg) == IfxMultican_Status_notSentBusy) //CAN ¸Ş¼¼Áö º¸³»±â
+    while (IfxMultican_Can_MsgObj_sendMessage(&g_MulticanBasic.drivers.canSrcMsgObj, &msg) == IfxMultican_Status_notSentBusy) //CAN ë©”ì„¸ì§€ ë³´ë‚´ê¸°
     {
        // break;
     }
@@ -184,15 +184,15 @@ void CAN_send(CanRxMsg *message)
 void CAN_TEST(void)
 {
     CanRxMsg MES;
-    int i=0;                                     //¹İº¹¹®¿ë º¯¼ö ¼±¾ğ
-    MES.ID=0x888;                                //µÎÀÚ¸® ¼ıÀÚ¸¸ º¸³»´Â°Ô °¡´ÉÇÑ CAN ID
-    MES.IDE=0;                                   //Åë½Å ÆĞÅ¶ÀÌ 0ÀÏ½Ã Standard , 1ÀÏ½Ã Extend
-    MES.DLC=8;                                   //µ¥ÀÌÅÍ ±æÀÌ
+    int i=0;                                     //ë°˜ë³µë¬¸ìš© ë³€ìˆ˜ ì„ ì–¸
+    MES.ID=0x888;                                //ë‘ìë¦¬ ìˆ«ìë§Œ ë³´ë‚´ëŠ”ê²Œ ê°€ëŠ¥í•œ CAN ID
+    MES.IDE=0;                                   //í†µì‹  íŒ¨í‚·ì´ 0ì¼ì‹œ Standard , 1ì¼ì‹œ Extend
+    MES.DLC=8;                                   //ë°ì´í„° ê¸¸ì´
     for(i=0; i<8; i++)
     {
-        MES.Data[i]=a[i];                        //º¸³»´Â µ¥ÀÌÅÍ
+        MES.Data[i]=a[i];                        //ë³´ë‚´ëŠ” ë°ì´í„°
     }
-    CAN_send(&MES);                              //CANÅë½ÅÀ¸·Î º¸³»´Â ÇÔ¼ö
+    CAN_send(&MES);                              //CANí†µì‹ ìœ¼ë¡œ ë³´ë‚´ëŠ” í•¨ìˆ˜
 }
 
 
