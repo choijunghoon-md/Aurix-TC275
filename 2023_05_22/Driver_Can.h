@@ -15,7 +15,7 @@
 /*Define*/ 
 /***********************************************************************/
 
-#define STB         &MODULE_P20,6
+#define STB         &MODULE_P20,6                               //STB í•€ ì„¤ì •(LOWë¡œ ë‘¬ì•¼ í†µì‹  ê°€ëŠ¥)
 
 #define TX_INTERRUPT_SRC_ID         IfxMultican_SrcId_0         /* Transmit interrupt service request ID             */
 #define ISR_PRIORITY_CAN_TX         2                           /* Define the CAN TX interrupt priority              */
@@ -23,15 +23,15 @@
 #define PIN6                        6                           /* LED2 used in RX ISR is connected to this pin      */
 
 
-#define WAIT_TIME_1ms               1                           // 1ms½Ã°£
-#define WAIT_TIME_5ms               5                           // 5ms½Ã°£
-#define WAIT_TIME_10ms              10                          // 10ms½Ã°£
-#define WAIT_TIME_20ms              20                          // 20ms½Ã°£
-#define WAIT_TIME_50ms              50                          // 50ms½Ã°£
-#define WAIT_TIME_100ms             100                         // 100ms½Ã°£
+#define WAIT_TIME_1ms               1                           // 1msì‹œê°„
+#define WAIT_TIME_5ms               5                           // 5msì‹œê°„
+#define WAIT_TIME_10ms              10                          // 10msì‹œê°„
+#define WAIT_TIME_20ms              20                          // 20msì‹œê°„
+#define WAIT_TIME_50ms              50                          // 50msì‹œê°„
+#define WAIT_TIME_100ms             100                         // 100msì‹œê°„
 
-#define LED1         &MODULE_P00,5                              //infineon LED1¹ø ÇÉ
-#define LED2         &MODULE_P00,6                              //infineon LED2¹ø ÇÉ
+#define LED1         &MODULE_P00,5                              //infineon LED1ë²ˆ í•€
+#define LED2         &MODULE_P00,6                              //infineon LED2ë²ˆ í•€
 /***********************************************************************/
 /*Typedef*/ 
 /***********************************************************************/
@@ -48,10 +48,10 @@ typedef struct
 
 typedef struct
 {
-    unsigned long ID;           //id ÀúÀå
-    unsigned char IDE;          //Åë½Å ÆĞÅ¶ ¼³Á¤
-    unsigned char DLC;          //µ¥ÀÌÅÍÀÇ ±æÀÌ
-    unsigned char Data[8];      //µ¥ÀÌÅÍ 8byt ÀúÀå
+    unsigned long ID;           //id ì €ì¥
+    unsigned char IDE;          //í†µì‹  íŒ¨í‚· ì„¤ì •
+    unsigned char DLC;          //ë°ì´í„°ì˜ ê¸¸ì´
+    unsigned char Data[8];      //ë°ì´í„° 8byt ì €ì¥
 } CanRxMsg;
 
 typedef struct
@@ -70,11 +70,11 @@ IFX_EXTERN App_MulticanBasic g_MulticanBasic;
 /***********************************************************************/
 /*Global Function Prototype*/ 
 /***********************************************************************/
-extern void Driver_Can_Init(void);                  //CANÅë½Å È¯°æ ¼³Á¤
-extern void Driver_Can_TxTest(void);
-extern void CAN_send(CanRxMsg *message);            //CANÅë½ÅÀ» º¸³»´Â ÇÔ¼ö
-extern void CAN_TEST(void);                         //CANÅë½Å Msg¸¦ ¼³Á¤ÇÏ¿© ÅëÀÎÀ» º¸³»´Â ÇÔ¼ö
-void initLed(void);                                 //LEDÇÉ ¼³Á¤
-void blinkLED1(void);                               //LED1¸¦ 1msµ¿¾È Ä×´Ù ²ô´Â ÇÔ¼ö
-void blinkLED2(void);                               //LED2ÀÇ HIGH,LOW»óÅÂ¸¦ ¹Ù²Ù°í 10ms¸¦ ±â´Ù¸®´Â ÇÔ¼ö
+extern void Driver_Can_Init(void);                  //CANí†µì‹  í™˜ê²½ ì„¤ì •
+extern void Driver_Can_TxTest(void);                //CANí†µì‹  TXí…ŒìŠ¤íŠ¸
+extern void CAN_send(CanRxMsg *message);            //CANí†µì‹ ì„ ë³´ë‚´ëŠ” í•¨ìˆ˜
+extern void CAN_TEST(void);                         //CANí†µì‹  Msgë¥¼ ì„¤ì •í•˜ì—¬ í†µì¸ì„ ë³´ë‚´ëŠ” í•¨ìˆ˜
+void initLed(void);                                 //LEDí•€ ì„¤ì •
+void blinkLED1(void);                               //LED1ë¥¼ 1msë™ì•ˆ ì¼°ë‹¤ ë„ëŠ” í•¨ìˆ˜
+void blinkLED2(void);                               //LED2ì˜ HIGH,LOWìƒíƒœë¥¼ ë°”ê¾¸ê³  10msë¥¼ ê¸°ë‹¤ë¦¬ëŠ” í•¨ìˆ˜
 #endif /* DRIVER_STM */
