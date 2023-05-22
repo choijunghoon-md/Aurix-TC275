@@ -51,7 +51,7 @@ typedef struct
     unsigned long ID;           //id 저장
     unsigned char IDE;          //통신 패킷 설정
     unsigned char DLC;          //데이터의 길이
-    unsigned char Data[8];      //데이터 8byt 저장
+    unsigned char Data[8];      //데이터 8Byt 저장
 } CanRxMsg;
 
 typedef struct
