@@ -49,14 +49,12 @@ int core0_main(void)
     IfxCpu_waitEvent(&g_cpuSyncEvent, 1);
     
     initLed();
-    //blinkLED1();
     Driver_Can_Init();
    // CAN_TEST();
 
     while(1)
     {
         //Driver_Can_TxTest();
-        //blinkLED1();
         //CAN_TEST();
         blinkLED2();
         waitTime(IfxStm_getTicksFromMilliseconds(BSP_DEFAULT_TIMER, WAIT_TIME_20ms));    /* Wait 20 milliseconds            */

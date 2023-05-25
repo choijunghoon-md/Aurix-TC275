@@ -85,8 +85,8 @@ extern void Driver_Can_TxTest(void);
 extern void CAN_send(CanRxMsg *message);            //CAN통신을 보내는 함수
 extern void CAN_TEST(void);                         //CAN통신 Msg를 설정하여 통인을 보내는 함수
 
-void canIsrTxHandler(void);
-void canIsrRxHandler(void);
+void canIsrTxHandler(void);                         //TX 인터럽스 핸들러
+void canIsrRxHandler(void);                         //RX 인터럽스 핸들러
 
 void initLed(void);                                 //LED핀 설정
 void blinkLED1(void);                               //LED1를 1ms동안 켰다 끄는 함수

@@ -36,7 +36,7 @@ IFX_INTERRUPT(canIsrRxHandler, 0, ISR_PRIORITY_CAN_RX);  //CAN RX 인터럽트
 /*Variable*/ 
 /***********************************************************************/
 App_MulticanBasic g_MulticanBasic; /**< \brief Demo information */
-volatile CanRxMsg rec;                    //can rx msg설정(현재 TX코드에 대해선 유기된 변수)
+volatile CanRxMsg rec;                    //can rx msg설정
 int a[8]={0,0x1,0x2,0x3,0x4,0x5,0x6,0x7}; //보낼 데이터 설정
  
 /***********************************************************************/
@@ -128,7 +128,7 @@ void Driver_Can_Init(void)
     IfxMultican_Can_MsgObj_initConfig(&canMsgObjConfig, &g_MulticanBasic.drivers.canSrcNode);
 
     canMsgObjConfig.msgObjId              = (IfxMultican_MsgObjId)0;                                                              //256개의 message object가 있음
-    canMsgObjConfig.messageId             = 0x100;
+    canMsgObjConfig.messageId             = 0x90;
     canMsgObjConfig.acceptanceMask        = 0x7FFFFFFFUL;
     canMsgObjConfig.frame                 = IfxMultican_Frame_transmit;                                     // CAN TX로 설정
     canMsgObjConfig.control.messageLen    = IfxMultican_DataLengthCode_8;                                   // Data 길이는 8
@@ -144,18 +144,19 @@ void Driver_Can_Init(void)
 
     /*Create message object for RX*/
 
-    canMsgObjConfig.msgObjId              = (IfxMultican_MsgObjId)0;                                                              //256개의 message object가 있음
-        canMsgObjConfig.messageId             = 0x100;
-        canMsgObjConfig.acceptanceMask        = 0x7FFFFFFFUL;
-        canMsgObjConfig.frame                 = IfxMultican_Frame_transmit;                                     // CAN TX로 설정
-        canMsgObjConfig.control.messageLen    = IfxMultican_DataLengthCode_8;                                   // Data 길이는 8
-        canMsgObjConfig.control.extendedFrame = FALSE;                                                          // Extended ID 사용 안함
+    canMsgObjConfig.msgObjId              = (IfxMultican_MsgObjId)1;                                        //256개의 message object가 있음
+    canMsgObjConfig.messageId             = 0x90;
+    canMsgObjConfig.acceptanceMask        = 0x7FFFFFFFUL;
+    canMsgObjConfig.frame                 = IfxMultican_Frame_transmit;                                     // CAN TX로 설정
+    canMsgObjConfig.control.messageLen    = IfxMultican_DataLengthCode_8;                                   // Data 길이는 8
+    canMsgObjConfig.control.extendedFrame = FALSE;                                                          // Extended ID 사용 안함
+    canMsgObjConfig.control.matchingId    = TRUE;
 
-        canMsgObjConfig.rxInterrupt.enabled = TRUE;                                                             // CAN 인터럽트 enabled  RX
-        canMsgObjConfig.rxInterrupt.srcId = RX_INTERRUPT_SRC_ID;                                                // 전송 인터럽트 서비스 요청 ID  RX
+    canMsgObjConfig.rxInterrupt.enabled = TRUE;                                                             // CAN 인터럽트 enabled  RX
+    canMsgObjConfig.rxInterrupt.srcId = RX_INTERRUPT_SRC_ID;                                                // 전송 인터럽트 서비스 요청 ID  RX
 
-        /* initialize message object RX*/
-           IfxMultican_Can_MsgObj_init(&g_MulticanBasic.drivers.canDstMsgObj, &canMsgObjConfig);
+    /* initialize message object RX*/
+    IfxMultican_Can_MsgObj_init(&g_MulticanBasic.drivers.canDstMsgObj, &canMsgObjConfig);
 
 
 
@@ -163,6 +164,7 @@ void Driver_Can_Init(void)
     IfxPort_setPinModeOutput(STB, IfxPort_OutputMode_pushPull, IfxPort_OutputIdx_general);
     /* Set STB Pin of CAN chip (low-level active) */
     IfxPort_setPinLow(STB);
+    /* Set INT_RX_OUT Pin */
     IfxPort_setPinModeOutput(INT_RX_OUT, IfxPort_OutputMode_pushPull, IfxPort_OutputIdx_general);
     IfxPort_setPinLow(INT_RX_OUT);
     //IfxPort_setPinHigh(STB);
@@ -234,11 +236,17 @@ void canIsrRxHandler(void)
     if(!(readStatus & IfxMultican_Status_newData)){ //새로운 데이터 없을시 received 에러
         while(1){}
     }
-    if(!(readStatus & IfxMultican_Status_newDataButOneLost)){ //새로운 데이터 없을시 received 그러나 메세지 읽을시 에러
-            while(1){}
-        }
-    IfxPort_setPinHigh(INT_RX_OUT); //신호 켜짐 알리기
-    waitTime(IfxStm_getTicksFromMilliseconds(BSP_DEFAULT_TIMER, WAIT_TIME_1ms));    /* Wait 1 milliseconds            */
-    IfxPort_setPinLow(INT_RX_OUT); //종료
+    if(readStatus == IfxMultican_Status_newDataButOneLost){ //새로운 데이터 없을시 received 그러나 메세지 읽을시 에러
+        while(1){}
+    }
+    if(readStatus == IfxMultican_Status_newData){
+        IfxPort_setPinHigh(INT_RX_OUT); //신호 켜짐 알리기
+        waitTime(IfxStm_getTicksFromMilliseconds(BSP_DEFAULT_TIMER, WAIT_TIME_1ms));    /* Wait 1 milliseconds            */
+        IfxPort_setPinLow(INT_RX_OUT); //종료
+    }
+    //RX통신 끝 확인용 코드들
+    //IfxPort_setPinHigh(INT_RX_OUT); //신호 켜짐 알리기
+    //waitTime(IfxStm_getTicksFromMilliseconds(BSP_DEFAULT_TIMER, WAIT_TIME_1ms));    /* Wait 1 milliseconds            */
+    //IfxPort_setPinLow(INT_RX_OUT); //종료
 }
 
